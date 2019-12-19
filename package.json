@@ -1,0 +1,37 @@
+{
+  "name": "@dwmt/modalis",
+  "version": "0.0.1-alpha",
+  "description": "A very powerful modal system for Vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwmt/modalis.git"
+  },
+  "keywords": [
+    "modal",
+    "vue",
+    "component",
+    "system",
+    "dwmt"
+  ],
+  "contributors": [
+    {
+      "name": "Lajos Kovács",
+      "email": "lajoskvcs@icloud.com",
+      "url": "https://lajoskvcs.com"
+    },
+    {
+      "name": "Gergely Szabó",
+      "email": "gergely0116@gmail.com",
+      "url": "https://github.com/Baxi0116"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwmt/modalis/issues"
+  },
+  "homepage": "https://github.com/dwmt/modalis#readme"
+}
