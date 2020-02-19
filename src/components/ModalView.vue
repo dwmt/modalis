@@ -1,7 +1,6 @@
 <template>
-<div className="modalis">
+<div class="modalis" :class="{'foreground': activeModal && activeModal.place === name}">
 	<component :is="activeModal.component" v-if="activeModal && activeModal.place === name" :modalID="activeModal.key" />
-	<div>{{ instances }}</div>
 </div>
 </template>
 <script>
@@ -39,10 +38,13 @@ export default {
 
 <style lang="stylus" scoped>
 .modalis
-	position relative
+	position absolute
 	width 100vw
 	height 100vh
 	top 0
 	left 0
 	z-index 500
+	pointer-events none
+	&.foreground
+		pointer-events auto
 </style>
