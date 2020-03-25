@@ -27,6 +27,12 @@ export default {
 		async throw (returnValue) {
 			await this.$modalis.throwModal(this.modalID, returnValue)
 		}
+	},
+	errorCaptured (err) {
+		console.log('[Modalis] Error captured during modal rendering...', err)
+		console.log('[Modalis] Cleaning up the mess...')
+		this.close()
+		this.$modalis.showError('modalRenderingError', {error: err}, {})
 	}
 }
 </script>

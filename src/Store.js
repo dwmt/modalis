@@ -1,4 +1,5 @@
 import BaseModalComponent from './components/BaseModal.vue'
+import ModalRenderingErrorComponent from './components/ModalRenderingError.vue'
 import ModalView from './components/ModalView.vue'
 
 let Vue
@@ -46,6 +47,12 @@ export class Store {
 		
 		Vue.config.silent = silent
 
+		this.registerModal({
+			name: 'modalRenderingError',
+			type: 'error',
+			component: ModalRenderingErrorComponent
+		})
+
 	}
 
 	get instances () {
@@ -73,7 +80,9 @@ export class Store {
 		assert(modal.name, 'Missing name')
 		assert(modal.type, 'Missing type')
 		assert(modal.component, 'Missing component')
-		assert(!this._modals[modal.name], `Modal with name ${modal.name} is already exists!`)
+		if (modal.name !== 'modalRenderingError') {
+			assert(!this._modals[modal.name], `Modal with name ${modal.name} is already exists!`)
+		}
 		if (typeof modal.singleton === 'undefined') {
 			modal.singleton = false
 		}
@@ -168,7 +177,7 @@ export class Store {
 			type: 'close',
 			value: undefined
 		})
-		let parentID = this._vm._data.instances[ID].parent
+		let parentID = (this._vm._data.instances[ID]) ? this._vm._data.instances[ID].parent : false
 		delete this._vm._data.instances[ID]
 		if (parentID) {
 			this._activate(parentID)
