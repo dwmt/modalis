@@ -1,5 +1,5 @@
 <template>
-<div class="modalis" :class="{'foreground': activeModal && activeModal.place === name}">
+<div class="modalis" :class="{'foreground': activeModal && activeModal.place === name, 'screen': height !== 'full', 'full': height === 'full'}">
 	<component :is="activeModal.component" v-if="activeModal && activeModal.place === name" :modalID="activeModal.key" />
 </div>
 </template>
@@ -11,6 +11,11 @@ export default {
 		placeName: {
 			type: String,
 			required: false
+		},
+		height: {
+			type: String,
+			required: false,
+			default: 'screen'
 		}
 	},
 	data () {
@@ -40,11 +45,14 @@ export default {
 .modalis
 	position absolute
 	width 100vw
-	height 100vh
 	top 0
 	left 0
 	z-index 500
 	pointer-events none
 	&.foreground
 		pointer-events auto
+	&.screen
+		height 100vh
+	&.full
+		height 100%
 </style>
