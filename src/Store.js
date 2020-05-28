@@ -17,7 +17,7 @@ function generateUUID() {
 }
 
 export class Store {
-	constructor () {
+	constructor (config = {}) {
 		if (!Vue && typeof window !== 'undefined' && window.Vue) {
 			install(window.Vue)
 		}
@@ -34,6 +34,7 @@ export class Store {
 
 		this._places = []
 
+		this.strictMode = config.strictMode || true
 
 		const silent = Vue.config.silent
 		Vue.config.silent = true
@@ -80,7 +81,7 @@ export class Store {
 		assert(modal.name, 'Missing name')
 		assert(modal.type, 'Missing type')
 		assert(modal.component, 'Missing component')
-		if (modal.name !== 'modalRenderingError') {
+		if (modal.name !== 'modalRenderingError' && this.strictMode) {
 			assert(!this._modals[modal.name], `Modal with name ${modal.name} is already exists!`)
 		}
 		if (typeof modal.singleton === 'undefined') {
