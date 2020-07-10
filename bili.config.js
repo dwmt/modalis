@@ -5,6 +5,7 @@ module.exports = {
 		extractCSS: false,
 		format: 'esm'
 	},
+	bundleNodeModules: false,
 	plugins: {
 		vue: true
 	}
