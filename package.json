@@ -19,7 +19,8 @@
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
     "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
-    "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
+		"build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
+		"watch": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --watch",
     "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mochapack --webpack-config test/webpack.config.js --require test/setup.js test/**/*.spec.js"
   },
   "keywords": [
