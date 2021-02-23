@@ -1,6 +1,6 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"description": "A very powerful modal system for Vue",
 	"main": "dist/Modalis.ssr.js",
 	"browser": "dist/Modalis.esm.js",
