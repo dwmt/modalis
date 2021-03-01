@@ -11,12 +11,13 @@
 				a(@click="close") Close
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import BaseModal from './BaseModal.vue'
-export default {
+export default defineComponent({
 	name: 'ModalRenderingError',
 	extends: BaseModal
-}
+})
 </script>
 
 <style lang="stylus" scoped>

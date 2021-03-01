@@ -1,10 +1,15 @@
-<template>
-<div class="modalis" :class="{'foreground': activeModal && activeModal.place === name, 'screen': height !== 'full', 'full': height === 'full'}">
-	<component :is="activeModal.component" v-if="activeModal && activeModal.place === name" :modalID="activeModal.key" />
-</div>
+<template lang="pug">
+div.modalis(:class="{'foreground': activeModal && activeModal.place === name, 'screen': height !== 'full', 'full': height === 'full'}")
+	component(
+		:is="activeModal.component"
+		v-if="activeModal && activeModal.place === name"
+		:modalID="activeModal.key"
+	)
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, computed, onBeforeMount, ref } from 'vue'
+import { useModalis } from '../Modalis'
+export default defineComponent({
 	name: 'ModalView',
 	props: {
 		placeName: {
@@ -17,27 +22,23 @@ export default {
 			default: 'screen'
 		}
 	},
-	data () {
+	setup (props) {
+		const $modalis = useModalis()
+		const activeModal = computed(() => $modalis.activeModal)
+		const name = ref('')
+		onBeforeMount(() => {
+			if (props.placeName === 'default') {
+				throw new Error('[Modalis] Place name \'default\' is reserved!')
+			}
+			name.value = props.placeName || 'default'
+			$modalis.registerPlace(props.placeName || 'default')
+		})
 		return {
-			name: ''
+			activeModal,
+			name
 		}
-	},
-	computed: {
-		activeModal () {
-			return this.$modalis.activeModal
-		},
-		modalis () {
-			return this.$modalis
-		}
-	},
-	beforeMount () {
-		if (this.placeName === 'default') {
-			throw new Error('[Modalis] Place name \'default\' is reserved!')
-		}
-		this.name = this.placeName || 'default'
-		this.$modalis.registerPlace(this.placeName || 'default')
 	}
-}
+})
 </script>
 
 <style lang="stylus" scoped>

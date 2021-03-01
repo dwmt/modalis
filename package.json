@@ -1,14 +1,17 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "0.1.7",
+	"version": "1.0.0",
 	"description": "A very powerful modal system for Vue",
-	"main": "dist/Modalis.ssr.js",
-	"browser": "dist/Modalis.esm.js",
-	"module": "dist/Modalis.esm.js",
-	"unpkg": "dist/Modalis.min.js",
+	"main": "./dist/modalis.umd.js",
+	"module": "./dist/modalis.es.js",
+	"exports": {
+		".": {
+			"import": "./dist/modalis.es.js",
+			"require": "./dist/modalis.umd.js"
+		}
+	},
 	"files": [
-		"dist/*",
-		"src/**/*.vue"
+		"dist"
 	],
 	"repository": {
 		"type": "git",
@@ -16,11 +19,8 @@
 	},
 	"scripts": {
 		"prepublishOnly": "npm run build",
-		"build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
-		"build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
-		"build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
-		"build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
-		"watch": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --watch"
+		"build": "rimraf dist && vite build",
+		"dev": "vite"
 	},
 	"keywords": [
 		"modal",
@@ -46,42 +46,20 @@
 		"url": "https://github.com/dwmt/modalis/issues"
 	},
 	"homepage": "https://github.com/dwmt/modalis#readme",
-	"devDependencies": {
-		"@babel/cli": "^7.10.5",
-		"@babel/core": "^7.11.1",
-		"@babel/plugin-syntax-dynamic-import": "^7.8.3",
-		"@babel/preset-env": "^7.11.0",
-		"@babel/preset-flow": "^7.10.4",
-		"@vue/test-utils": "^1.0.4",
-		"@rollup/plugin-alias": "^3.1.1",
-		"@rollup/plugin-commonjs": "^15.0.0",
-		"@rollup/plugin-replace": "^2.3.3",
-		"@vue/cli-plugin-babel": "^4.5.4",
-		"@vue/cli-service": "^4.5.4",
-		"cross-env": "^7.0.2",
-		"minimist": "^1.2.5",
-		"rollup": "^2.26.3",
-		"rollup-plugin-terser": "^7.0.0",
-		"rollup-plugin-vue": "^5.1.9",
-		"babel-plugin-istanbul": "^6.0.0",
-		"chai": "^4.2.0",
-		"jsdom": "^16.4.0",
-		"jsdom-global": "^3.0.2",
-		"nyc": "^15.1.0",
-		"pug": "^3.0.0",
-		"stylus": "^0.54.8",
-		"tailwindcss": "^1.6.2",
-		"vue-template-compiler": "^2.6.11",
-		"@rollup/plugin-babel": "^5.2.0"
-	},
 	"peerDependencies": {
-		"vue": "^2.6.11"
+		"vue": "^3.0.6"
 	},
-	"nyc": {
-		"include": [
-			"src/**/*.(js|vue)"
-		],
-		"instrument": false,
-		"sourceMap": false
+	"devDependencies": {
+		"@types/node": "^14.14.31",
+		"@vitejs/plugin-vue": "^1.1.5",
+		"cross-env": "^7.0.2",
+		"pug": "^3.0.0",
+		"rimraf": "^3.0.2",
+		"stylus": "^0.54.8",
+		"typescript": "^4.2.2",
+		"vite": "^2.0.3"
+	},
+	"dependencies": {
+		"tiny-emitter": "^2.1.0"
 	}
 }

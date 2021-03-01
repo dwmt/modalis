@@ -1,31 +1,37 @@
-<script>
-import BaseModalProps from './BaseModal.props'
-export default {
+<script lang="ts">
+// @ts-nocheck
+import { defineComponent } from 'vue'
+export default defineComponent({
 	name: 'BaseModal',
-	props: BaseModalProps,
+	props: {
+		modalID: {
+			type: String,
+			required: true
+		}
+	},
 	computed: {
-		data () {
+		data (): any {
 			return this.$modalis.getModalData(this.modalID) || {}
 		}
 	},
 	methods: {
-		async showModal (name, data, options) {
+		async showModal (name, data, options): Promise<any> {
 			return await this.$modalis.showModal(name, data, Object.assign(options, {parent: this.modalID}))
 		},
-		async showError (name, data, options) {
+		async showError (name, data, options): Promise<any> {
 			return await this.$modalis.showError(name, data, Object.assign(options, {parent: this.modalID}))
 		},
-		async showConfirmation (name, data, options) {
+		async showConfirmation (name, data, options): Promise<any> {
 			return await this.$modalis.showConfirmation(name, data, Object.assign(options, {parent: this.modalID}))
 		},
-		async close () {
-			await this.$modalis.closeModal(this.modalID)
+		close (): void {
+			this.$modalis.closeModal(this.modalID)
 		},
-		async return (returnValue) {
-			await this.$modalis.returnModal(this.modalID, returnValue)
+		return (returnValue): void {
+			this.$modalis.returnModal(this.modalID, returnValue)
 		},
-		async throw (returnValue) {
-			await this.$modalis.throwModal(this.modalID, returnValue)
+		throw (returnValue): void {
+			this.$modalis.throwModal(this.modalID, returnValue)
 		}
 	},
 	errorCaptured (err) {
@@ -34,5 +40,5 @@ export default {
 		this.close()
 		this.$modalis.showError('modalRenderingError', {error: err}, {})
 	}
-}
+})
 </script>
