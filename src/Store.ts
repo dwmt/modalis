@@ -9,7 +9,7 @@ function assert (condition: any, msg: string) {
 	if (!condition) throw new Error(`[Modalis] ${msg}`)
 }
 
-type StoreConfig = {
+export type StoreConfig = {
 	strictMode?: boolean
 }
 
@@ -19,12 +19,12 @@ export enum ModalType {
 	Confirmation = 'confirmation'
 }
 
-type Mask = {
+export type Mask = {
 	name: string,
 	component: any
 
 }
-type Modal = {
+export type Modal = {
 	name: string,
 	component: any,
 	singleton?: boolean,
@@ -34,7 +34,7 @@ type Modal = {
 	key?: string
 }
 
-type ShowOptions = {
+export type ShowOptions = {
 	place?: string,
 	mask?: string,
 	parent?: string

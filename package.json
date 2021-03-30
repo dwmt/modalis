@@ -1,6 +1,6 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A very powerful modal system for Vue",
 	"main": "./dist/modalis.umd.js",
 	"module": "./dist/modalis.es.js",
@@ -10,6 +10,7 @@
 			"require": "./dist/modalis.umd.js"
 		}
 	},
+	"types": "./dist/src/Modalis.d.ts",
 	"files": [
 		"dist"
 	],
@@ -19,7 +20,7 @@
 	},
 	"scripts": {
 		"prepublishOnly": "npm run build",
-		"build": "rimraf dist && vite build",
+		"build": "rimraf dist && vite build && tsc -d --emitDeclarationOnly --outDir dist",
 		"dev": "vite"
 	},
 	"keywords": [
