@@ -13,6 +13,24 @@ export type StoreConfig = {
 	strictMode?: boolean
 }
 
+export interface IModalStore {
+	instances: any
+	activeModal: Modal
+
+	registerMask (maskObject: Mask): void
+	registerPlace (placeName: string): void
+	registerModal (modalDefinition: Modal): void
+	getModalData (ID: string): any
+	modalExists (ID: string): boolean
+	showModal (name: string, data: any, options: ShowOptions): Promise<any>
+	showError (name: string, data: any, options: ShowOptions): Promise<any>
+	showConfirmation (name: string, data: any, options: ShowOptions): Promise<any>
+	closeModal (ID: string): void
+	returnModal (ID: string, value: any): void
+	throwModal (ID: string, value: any): void
+	install (app: App): void
+}
+
 export enum ModalType {
 	Modal = 'modal',
 	Error = 'error',
@@ -50,29 +68,11 @@ export interface ModalComposite {
 	throw(returnValue: any): void
 }
 
-export function createModalis (config: StoreConfig = {}): ModalStore {
+export function createModalis (config: StoreConfig = {}): IModalStore {
 	return new Store(config)
 }
 
-export interface ModalStore {
-	instances: any
-	activeModal: Modal
-
-	registerMask (maskObject: Mask): void
-	registerPlace (placeName: string): void
-	registerModal (modalDefinition: Modal): void
-	getModalData (ID: string): any
-	modalExists (ID: string): boolean
-	showModal (name: string, data: any, options: ShowOptions): Promise<any>
-	showError (name: string, data: any, options: ShowOptions): Promise<any>
-	showConfirmation (name: string, data: any, options: ShowOptions): Promise<any>
-	closeModal (ID: string): void
-	returnModal (ID: string, value: any): void
-	throwModal (ID: string, value: any): void
-	install (app: App): void
-}
-
-export class Store implements ModalStore {
+export class Store implements IModalStore {
 	private strictMode: boolean
 	private _modals: Map<string, Modal>
 	private _masks: Map<string, Mask>
@@ -250,7 +250,7 @@ export class Store implements ModalStore {
 	}
 
 	install (app: App) {
-		const store: ModalStore = this
+		const store: IModalStore = this
 		app.provide(modalisStoreKey, store)
 		app.config.globalProperties.$modalis = store
 		app.component('ModalView', ModalView)

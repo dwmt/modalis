@@ -1,9 +1,9 @@
 import { inject, onErrorCaptured } from 'vue'
 import { modalisStoreKey } from './symbols'
-import { ModalComposite, ModalStore } from './Store'
+import { ModalComposite, IModalStore } from './Store'
 
 
-export function useModalis(): ModalStore {
+export function useModalis(): IModalStore {
   return inject(modalisStoreKey)!
 }
 

@@ -10,7 +10,7 @@
 			"require": "./dist/modalis.umd.js"
 		}
 	},
-	"types": "./dist/src/Modalis.d.ts",
+	"types": "./dist/Modalis.d.ts",
 	"files": [
 		"dist"
 	],
