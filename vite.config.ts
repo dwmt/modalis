@@ -11,10 +11,11 @@ export default defineConfig({
       name: 'Modalis'
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'tiny-emitter'],
       output: {
         globals: {
-          vue: 'Vue'
+          vue: 'Vue',
+          'tiny-emitter': 'TinyEmitter'
         }
       }
     }

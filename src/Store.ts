@@ -1,4 +1,4 @@
-import { reactive, App } from 'vue'
+import { reactive, App, ComputedRef, computed, markRaw } from 'vue'
 import {modalisStoreKey} from './symbols'
 import ModalRenderingErrorComponent from './components/ModalRenderingError.vue'
 import ModalView from './components/ModalView.vue'
@@ -15,12 +15,12 @@ export type StoreConfig = {
 
 export interface IModalStore {
 	instances: any
-	activeModal: Modal
+	activeModal: ComputedRef<ModalInstance | undefined>
 
 	registerMask (maskObject: Mask): void
 	registerPlace (placeName: string): void
 	registerModal (modalDefinition: Modal): void
-	getModalData (ID: string): any
+	getModalData<T = any> (ID: string): T
 	modalExists (ID: string): boolean
 	showModal (name: string, data: any, options: ShowOptions): Promise<any>
 	showError (name: string, data: any, options: ShowOptions): Promise<any>
@@ -52,14 +52,25 @@ export type Modal = {
 	key?: string
 }
 
+interface ModalInstance {
+	name: string
+	data: any
+	type: ModalType
+	place: string | undefined
+	mask: string | undefined
+	parent: string | undefined
+	active: boolean
+	component: any
+}
+
 export type ShowOptions = {
 	place?: string,
 	mask?: string,
 	parent?: string
 }
 
-export interface ModalComposite {
-	data: any
+export interface ModalComposite<T = any> {
+	data: T
 	showModal(name: string, data: any, options: any): Promise<any>
 	showError(name: string, data: any, options: any): Promise<any>
 	showConfirmation(name: string, data: any, options: any): Promise<any>
@@ -78,6 +89,7 @@ export class Store implements IModalStore {
 	private _masks: Map<string, Mask>
 	private _places: Array<string>
 	private _data: any
+	private _activeModal: ComputedRef<ModalInstance | undefined>
 	private _bus: TinyEmitter
 
 	constructor (config: StoreConfig = {}) {
@@ -92,8 +104,19 @@ export class Store implements IModalStore {
 		this._bus = new TinyEmitter()
 		
 		this._data = reactive({
-			instances: {},
-			activeModal: undefined
+			instances: {}
+		})
+
+		this._activeModal = computed(() => {
+			let modal = undefined
+			let keys = Object.keys(this._data.instances)
+			keys.forEach((key) => {
+				if(this._data.instances[key].active) {
+					modal = this._data.instances[key]
+					modal.key = key
+				}
+			})
+			return modal
 		})
 
 		this.registerModal({
@@ -108,8 +131,8 @@ export class Store implements IModalStore {
 		return this._data.instances
 	}
 
-	get activeModal (): Modal {
-		return this._data.activeModal
+	get activeModal (): ComputedRef<ModalInstance | undefined> {
+		return this._activeModal
 	}
 
 	registerMask (maskObject: Mask): void {
@@ -151,7 +174,8 @@ export class Store implements IModalStore {
 		const modalOptions: Modal = this._modals.get(name)!
 		return new Promise ((resolve, reject) => {
 			const uuid = generateUUID()
-			let modalObject = {
+
+			let modalObject: ModalInstance = {
 				name: name,
 				data: data,
 				type: type,
@@ -159,13 +183,12 @@ export class Store implements IModalStore {
 				mask: options.mask || modalOptions.mask || undefined,
 				parent: options.parent || undefined,
 				active: true,
-				component: modalOptions.component
+				component: markRaw(modalOptions.component)
 			}
 
 			this._data.instances[uuid] = Object.assign({}, modalObject)
 
 			this._hideOther(uuid)
-			this._checkActiveModal()
 
 			this._bus.once(`return:${uuid}`, (val: any) => {
 				if (val.type === 'error') {
@@ -176,23 +199,12 @@ export class Store implements IModalStore {
 		})
 	}
 
-	_checkActiveModal () {
-		let modal = undefined
-		let keys = Object.keys(this._data.instances)
-		keys.forEach((key) => {
-			if(this._data.instances[key].active) {
-				modal = this._data.instances[key]
-				modal.key = key
-			}
-		})
-		this._data.activeModal = modal
-	}
 
 	modalExists (ID: string): boolean {
 		return !!this._data.instances[ID]
 	}
 
-	getModalData (ID: string): any {
+	getModalData<T = any> (ID: string): T {
 		return this._data.instances[ID].data
 	}
 
@@ -231,7 +243,6 @@ export class Store implements IModalStore {
 		if (parentID) {
 			this._activate(parentID)
 		}
-		this._checkActiveModal()
 	}
 
 	returnModal (ID: string, value: any): void {
@@ -250,9 +261,8 @@ export class Store implements IModalStore {
 	}
 
 	install (app: App) {
-		const store: IModalStore = this
-		app.provide(modalisStoreKey, store)
-		app.config.globalProperties.$modalis = store
+		app.provide(modalisStoreKey, this)
+		app.config.globalProperties.$modalis = this
 		app.component('ModalView', ModalView)
 	}
 }

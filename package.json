@@ -1,6 +1,6 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "A very powerful modal system for Vue",
 	"main": "./dist/modalis.umd.js",
 	"module": "./dist/modalis.es.js",
@@ -48,17 +48,18 @@
 	},
 	"homepage": "https://github.com/dwmt/modalis#readme",
 	"peerDependencies": {
-		"vue": "^3.0.6"
+		"vue": "3.2.6"
 	},
 	"devDependencies": {
-		"@types/node": "^14.14.31",
-		"@vitejs/plugin-vue": "^1.1.5",
-		"cross-env": "^7.0.2",
-		"pug": "^3.0.0",
+		"@types/node": "^16.10.2",
+		"@vitejs/plugin-vue": "1.9.2",
+		"@vue/compiler-sfc": "^3.2.19",
+		"cross-env": "^7.0.3",
+		"pug": "^3.0.2",
 		"rimraf": "^3.0.2",
-		"stylus": "^0.54.8",
-		"typescript": "^4.2.2",
-		"vite": "^2.0.3"
+		"stylus": "^0.55.0",
+		"typescript": "^4.4.3",
+		"vite": "^2.6.0"
 	},
 	"dependencies": {
 		"tiny-emitter": "^2.1.0"

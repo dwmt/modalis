@@ -7,20 +7,13 @@
 			button(@click="close") close
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { useModal, ModalCompositionMixin } from '../src/Modalis.ts'
-export default defineComponent({
-	name: 'ExampleModal',
-	mixins: [ModalCompositionMixin],
-	setup (props) {
-		const { data, close } = useModal(props)
-		return {
-			data,
-			close
-		}
-	}
-})
+<script lang="ts" setup>
+import { useModal } from '../src/Modalis.ts'
+interface ExampleModalComponentData {
+	title: string
+	body: string
+}
+const { data, close } = useModal<ExampleModalComponentData>()
 </script>
 
 <style lang="stylus">

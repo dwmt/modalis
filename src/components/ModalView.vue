@@ -24,7 +24,7 @@ export default defineComponent({
 	},
 	setup (props) {
 		const $modalis = useModalis()
-		const activeModal = computed(() => $modalis.activeModal)
+		const activeModal = $modalis.activeModal
 		const name = ref('')
 		onBeforeMount(() => {
 			if (props.placeName === 'default') {
