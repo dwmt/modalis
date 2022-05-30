@@ -1,6 +1,6 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "A very powerful modal system for Vue",
 	"main": "./dist/modalis.umd.js",
 	"module": "./dist/modalis.es.js",
@@ -62,6 +62,6 @@
 		"vite": "^2.6.0"
 	},
 	"dependencies": {
-		"tiny-emitter": "^2.1.0"
+		"mitt": "^3.0.0"
 	}
 }
