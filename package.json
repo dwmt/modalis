@@ -1,28 +1,7 @@
 {
 	"name": "@dwmt/modalis",
-	"version": "1.1.2",
+	"version": "2.0.0-development",
 	"description": "A very powerful modal system for Vue",
-	"main": "./dist/modalis.umd.js",
-	"module": "./dist/modalis.es.js",
-	"exports": {
-		".": {
-			"import": "./dist/modalis.es.js",
-			"require": "./dist/modalis.umd.js"
-		}
-	},
-	"types": "./dist/Modalis.d.ts",
-	"files": [
-		"dist"
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/dwmt/modalis.git"
-	},
-	"scripts": {
-		"prepublishOnly": "npm run build",
-		"build": "rimraf dist && vite build && tsc -d --emitDeclarationOnly --outDir dist",
-		"dev": "vite"
-	},
 	"keywords": [
 		"modal",
 		"vue",
@@ -30,6 +9,15 @@
 		"system",
 		"dwmt"
 	],
+	"homepage": "https://github.com/dwmt/modalis#readme",
+	"bugs": {
+		"url": "https://github.com/dwmt/modalis/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dwmt/modalis.git"
+	},
+	"license": "MIT",
 	"contributors": [
 		{
 			"name": "Lajos Kovács",
@@ -42,26 +30,74 @@
 			"url": "https://github.com/Baxi0116"
 		}
 	],
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/dwmt/modalis/issues"
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/modalis.js",
+			"require": "./dist/modalis.cjs"
+		}
 	},
-	"homepage": "https://github.com/dwmt/modalis#readme",
-	"peerDependencies": {
-		"vue": "^3.2.12"
+	"main": "./dist/modalis.cjs",
+	"module": "./dist/modalis.js",
+	"types": "./dist/modalis.d.ts",
+	"files": [
+		"dist",
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "del-cli dist && vite build",
+		"commit": "cz",
+		"dev": "vite",
+		"format": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,json,md,vue}\"",
+		"format:fix": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,json,md,vue}\" --write",
+		"lint": "eslint src/development/ src/ --ext js,jsx,ts,tsx,vue",
+		"lint:fix": "eslint src/development/ src/ --ext js,jsx,ts,tsx,vue --fix",
+		"prepare": "husky install",
+		"prepublishOnly": "npm run build",
+		"semantic-release": "semantic-release"
 	},
-	"devDependencies": {
-		"@types/node": "^16.10.2",
-		"@vitejs/plugin-vue": "1.9.2",
-		"@vue/compiler-sfc": "^3.2.19",
-		"cross-env": "^7.0.3",
-		"pug": "^3.0.2",
-		"rimraf": "^3.0.2",
-		"stylus": "^0.55.0",
-		"typescript": "^4.4.3",
-		"vite": "^2.6.0"
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	},
 	"dependencies": {
-		"mitt": "^3.0.0"
+		"nanoid": "^4.0.0"
+	},
+	"devDependencies": {
+		"@prettier/plugin-pug": "^2.3.0",
+		"@types/node": "^18.11.9",
+		"@typescript-eslint/parser": "^5.43.0",
+		"@vitejs/plugin-vue": "3.2.0",
+		"@vitejs/plugin-vue-jsx": "^2.1.1",
+		"@vue/compiler-sfc": "^3.2.45",
+		"commitizen": "^4.2.5",
+		"cross-env": "^7.0.3",
+		"cz-conventional-changelog": "^3.3.0",
+		"del-cli": "^5.0.0",
+		"eslint": "^8.27.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-import-resolver-typescript": "^3.5.2",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-unicorn": "^44.0.2",
+		"eslint-plugin-vue": "^9.7.0",
+		"husky": "^8.0.0",
+		"prettier": "^2.7.1",
+		"prettier-plugin-packagejson": "^2.3.0",
+		"pug": "^3.0.2",
+		"rimraf": "^3.0.2",
+		"semantic-release": "^19.0.5",
+		"stylus": "^0.59.0",
+		"typescript": "^4.9.3",
+		"vite": "^3.2.4",
+		"vite-plugin-checker": "^0.5.1",
+		"vite-plugin-dts": "^1.7.1",
+		"vue": "^3.2.45"
+	},
+	"peerDependencies": {
+		"vue": "^3.2.45"
 	}
 }
