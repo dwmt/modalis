@@ -1,3 +1,5 @@
+export { createContext } from './context'
 export { type Modal, createModal } from './createModal'
 export { useModal } from './useModal'
 export { ModalisProvider } from './components/ModalisProvider'
+export { ModalisView } from './components/ModalisView'

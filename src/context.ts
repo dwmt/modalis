@@ -3,9 +3,10 @@ import {
 	type Ref,
 	ref,
 	inject,
-	InjectionKey,
+	type InjectionKey,
 	computed,
 	type DefineComponent,
+	type App,
 } from 'vue'
 
 import { PolySymbol } from './symbols'
@@ -26,6 +27,7 @@ export type ModalisContext = {
 		component: DefineComponent<any, any, any, any, any, any, any, any, any>,
 		data: DataType,
 	): Promise<ReturnType>
+	install(app: App):void
 }
 
 export const modalisContextKey = /*#__PURE__*/ PolySymbol(
@@ -76,9 +78,14 @@ export function createContext(): ModalisContext {
 			instances.value.set(key, instance)
 		})
 	}
-	return {
+	const install = (app: App) => {
+		app.provide(modalisContextKey, context)
+	}
+	const context = {
 		instances,
 		modals,
 		push,
+		install
 	}
+	return context
 }

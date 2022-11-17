@@ -91,6 +91,7 @@
 		"prettier-plugin-packagejson": "^2.3.0",
 		"pug": "^3.0.2",
 		"rimraf": "^3.0.2",
+		"sass": "^1.56.1",
 		"semantic-release": "^19.0.5",
 		"stylus": "^0.59.0",
 		"typescript": "^4.9.3",

@@ -1,7 +1,8 @@
-import { defineComponent, provide, useSlots, Fragment, Teleport } from 'vue'
+import { defineComponent, provide, useSlots, Fragment } from 'vue'
 
 import { createContext, modalisContextKey } from '../context'
-import { ErrorBoundary } from './ErrorBoundary'
+import { ModalRenderer } from './ModalRenderer'
+
 export const ModalisProvider = defineComponent({
 	setup() {
 		const context = createContext()
@@ -10,20 +11,7 @@ export const ModalisProvider = defineComponent({
 		return () => (
 			<Fragment>
 				{slots.default?.()}
-				{context.modals.value.map((modal) => {
-					const Component = modal.component
-					return (
-						<Teleport key={modal.key} to="body">
-							<ErrorBoundary>
-								<Component
-									{...modal.data}
-									onReturn={modal.return}
-									onThrow={modal.throw}
-								/>
-							</ErrorBoundary>
-						</Teleport>
-					)
-				})}
+				<ModalRenderer context={context} />
 			</Fragment>
 		)
 	},
