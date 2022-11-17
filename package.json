@@ -68,6 +68,8 @@
 	},
 	"devDependencies": {
 		"@prettier/plugin-pug": "^2.3.0",
+		"@semantic-release/changelog": "^6.0.1",
+		"@semantic-release/git": "^10.0.1",
 		"@types/node": "^18.11.9",
 		"@typescript-eslint/parser": "^5.43.0",
 		"@vitejs/plugin-vue": "3.2.0",
