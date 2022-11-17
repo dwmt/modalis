@@ -65,8 +65,8 @@ import { ModalisProvider } from '@dwmt/modalis'
 
 With that, every single component inside `ModalisProvider` can open up a modal.
 
-> Attention!
-> Only `ModalisProvider`'s children can access modalis. If you try to open a modal in a component, which is not the descendant of `ModalisProvider`, your code will fail!
+| ⚠️ Only `ModalisProvider`'s children can access modalis. If you try to open a modal in a component, which is not the descendant of `ModalisProvider`, your code will fail! |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
 ### The Vue plugin way
 
