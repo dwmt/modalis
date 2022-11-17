@@ -13,6 +13,6 @@ export const ErrorBoundary = defineComponent({
 			)
 		})
 		return () =>
-			error.value ? h('p', 'Something went wrong') : slots.default?.()
+			error.value ? <p>Something went wrong</p> : slots.default?.()
 	},
 })
