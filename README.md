@@ -114,3 +114,187 @@ The `createModal` function has two generic types:
 2. ReturnType
 
 By default both the `DataType` and `ReturnType` are `void`. That means, you can call your modal without parameters, and it won't return any value.
+
+The signature of the function looks like this:
+
+```typescript
+createModal<DataType = void, ReturnType = void>(config: { component: Component }): Modal<DataType, ReturnType>
+```
+
+### Modal component
+
+In the old version of Modalis, we had a completely different strategy to pass data to modals and manage their state. In `v2` Modal components are normal components, that way testing is much easier.
+
+A modal component should always emit `return` and `throw` events. That's how the component communicates with Modalis. The modal component can also accept props.
+
+Let's see the possible solutions:
+
+Vue tsx way:
+
+```tsx
+import { defineComponent } from 'vue'
+
+export type ExampleModalProps = {
+	message: string
+}
+export type ExampleModalReturnType = {
+	result: string
+}
+
+export class ExampleModalError extends Error {}
+
+export const ExampleModal = defineComponent({
+	props: {
+		message: String,
+	},
+	emits: {
+		return: (data: ExampleModalReturnType) => true,
+		throw: (error: unknown) => true,
+	},
+	setup(props, { emit }) {
+		const returnModal = () => emit('return', { message: 'Welcome!' })
+		const throwError = () =>
+			emit('throw', new ExampleModalError('Some error'))
+		return () => (
+			<div className="modal">
+				<p>{props.message}</p>
+				<button onClick="returnModal">Return</button>
+				<button onClick="throwError">Throw error</button>
+			</div>
+		)
+	},
+})
+```
+
+Vue SFC defineComponent way:
+
+```vue
+<template>
+	<div class="modal">
+		<p>{{ message }}</p>
+		<button @click="returnModal">Return</button>
+		<button @click="throwError">Throw error</button>
+	</div>
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export type ExampleModalProps = {
+	message: string
+}
+export type ExampleModalReturnType = {
+	result: string
+}
+
+export class ExampleModalError extends Error {}
+
+export default defineComponent({
+	props: {
+		message: String,
+	},
+	emits: {
+		return: (data: ExampleModalReturnType) => true,
+		throw: (error: unknown) => true,
+	},
+	setup(props, { emit }) {
+		const returnModal = () => emit('return', { message: 'Welcome!' })
+		const throwError = () =>
+			emit('throw', new ExampleModalError('Some error'))
+		return {
+			returnModal,
+			throwError,
+		}
+	},
+})
+</script>
+```
+
+Vue SFC script setup way:
+
+```vue
+<template>
+	<div class="modal">
+		<p>{{ props.message }}</p>
+		<button @click="returnModal">Return</button>
+		<button @click="throwError">Throw error</button>
+	</div>
+</template>
+<script script lang="ts">
+export type ExampleModalProps = {
+	message: string
+}
+export type ExampleModalReturnType = {
+	result: string
+}
+
+export class ExampleModalError extends Error {}
+
+export default defineComponent({
+	emits: {
+		return: (data: ExampleModalReturnType) => true,
+		throw: (error: unknown) => true,
+	},
+	setup(props, { emit }) {
+		const props = defineProps<ExampleModalProps>()
+		const emit = defineEmits<{
+			return(data: ExampleModalReturnType): void
+			throw(error: unknown): void
+		}>()
+		const returnModal = () => emit('return', { message: 'Welcome!' })
+		const throwError = () =>
+			emit('throw', new ExampleModalError('Some error'))
+	},
+})
+</script>
+```
+
+Each method has its pros and cons, but in the end, it only matters, whether you can handle `return` and `throw` emits.
+
+### Creating the modal composable
+
+If you have the modal component, you can create your modal configuration now. If you use the tsx way or the defineComponent way, you can include the modal configuration in the same file. If you use script setup, then it's recommended to do the composable logic in a separate file!
+
+```typescript
+// useExampleModal.ts
+import ExampleModal, {
+	ExampleModalProps,
+	ExampleModalReturnType,
+} from './ExampleModal.vue'
+import { createModal, useModal } from '@dwmt/modalis'
+
+const exampleModal = createModal<ExampleModalProps, ExampleModalReturnType>({
+	component: ExampleModal,
+})
+
+export const useExampleModal = () => useModal(exampleModal)
+```
+
+With that, you already created your modal composable. Now let's use your modal!
+
+SomePage.vue
+
+```vue
+<template>
+	<Layout>
+		<h1>SomePage header</h1>
+		<input v-model="message" />
+		<p>Result: {{ result }}</p>
+		<button @click="showModal">Show my modal</button>
+	</Layout>
+</template>
+<script setup lang="ts">
+import { ref, type Ref } from 'vue'
+import { useExampleModal } from './useExampleModal'
+
+const message: Ref<string> = ref<string>('')
+const result: Ref<string> = ref<string>('')
+
+const { show: showExampleModal } = useExampleModal()
+
+const showModal = async () => {
+	result.value = await showExampleModal({ message: message.value })
+}
+</script>
+```
+
+Voilá! You are ready to go! Also, your now typesafe as far as typescript is typesafe!
