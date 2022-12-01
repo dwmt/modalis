@@ -152,7 +152,7 @@ export const ExampleModal = defineComponent({
 		throw: (error: unknown) => true,
 	},
 	setup(props, { emit }) {
-		const returnModal = () => emit('return', { message: 'Welcome!' })
+		const returnModal = () => emit('return', { string: 'Welcome!' })
 		const throwError = () =>
 			emit('throw', new ExampleModalError('Some error'))
 		return () => (
@@ -197,7 +197,7 @@ export default defineComponent({
 		throw: (error: unknown) => true,
 	},
 	setup(props, { emit }) {
-		const returnModal = () => emit('return', { message: 'Welcome!' })
+		const returnModal = () => emit('return', { result: 'Welcome!' })
 		const throwError = () =>
 			emit('throw', new ExampleModalError('Some error'))
 		return {
@@ -229,22 +229,15 @@ export type ExampleModalReturnType = {
 
 export class ExampleModalError extends Error {}
 
-export default defineComponent({
-	emits: {
-		return: (data: ExampleModalReturnType) => true,
-		throw: (error: unknown) => true,
-	},
-	setup(props, { emit }) {
-		const props = defineProps<ExampleModalProps>()
-		const emit = defineEmits<{
-			return(data: ExampleModalReturnType): void
-			throw(error: unknown): void
-		}>()
-		const returnModal = () => emit('return', { message: 'Welcome!' })
-		const throwError = () =>
-			emit('throw', new ExampleModalError('Some error'))
-	},
-})
+const props = defineProps<ExampleModalProps>()
+const emit = defineEmits<{
+	(e: 'return', data: ExampleModalReturnType): void
+    (e: 'throw', error: unknown): void
+}>()
+const returnModal = () => emit('return', { result: 'Welcome!' })
+const throwError = () =>
+    emit('throw', new ExampleModalError('Some error'))
+
 </script>
 ```
 
